@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>背景与边框</title>
+	<meta keyWords="半透明边框" />
+	<meta discription="CSS 半透明颜色的使用" />
+	<style type="text/css">
+                    .border {
+                    	width:  200px;
+                    	height:  200px;
+                    	margin:  100px;
+                    	border: 10px solid hsla(0, 24%, 51%, 0.2);
+                    	background: #D29F9F;
+                    	background-clip: padding-box;
+                    }
+                    .title {
+                    	    position: absolute;
+                    	    margin-top: 70px;
+		    margin-left: 24px;
+		    width: 150px;
+		    height: 50px;
+		    border: 3px solid rgba(50,50,50,.1);
+		    background: #fff;
+		    background-clip: content-box;
+                    }
+                    span {
+                    	    line-height: 46px;
+                                    padding-left: 8px;
+                                    color:  #D29F9F;
+                    }
+                    .box {
+                    	position: relative;
+                    	width: 200px;
+                    	height: 200px;
+                    	margin: -300px 0 0 500px;
+                    	background: #D29F9F;
+                    	box-shadow: 0 0 0 10px #614A4A, 0 0 0 15px rgba(50,50,50,.3),0 2px 5px 15px rgba(0,0,0,.6) inset;
+                    }
+                    .outline {
+                    	position: relative;
+                    	width: 200px;
+                    	height: 200px;
+                    	margin: -200px 0 0 900px;
+                    	background:  #D29F9F;
+                    	border-radius:  15%;
+                    	outline: 5px solid rgba(50,50,50,.2);
+                    }
+                    .position {
+                               position: relative;
+                               width: 200px;
+                               height: 200px;
+                               margin: 100px 0 0 100px;
+                               background:  #D29F9F; 
+                    }
+                    .calc {
+                              width: calc(100%);
+                              height:  calc(100% - 20px);
+                              background: url("./img/calc.png") no-repeat;
+                              background-position:  left 22px top 70px; 
+                    }
+                    .radius {
+                              position: relative;
+                               width: 180px;
+                               height: 160px;
+                               margin: -200px 0 0 500px;
+                               background:  #D29F9F; 
+                               border-radius: .8em;
+                               padding:  1em;
+                               box-shadow: 0 0 0 .5em rgb(50,50,50);
+                               outline : .6em solid rgb(50,50,50);
+                    }
+                    .linear {
+                               position: relative;
+                               width: 200px;
+                               height: 200px;
+                               margin: -200px 0 0 900px;
+                               background:  linear-gradient(45deg,#000 20%,#D29F9F 80%);
+                    }
+	</style>
+</head>
+<body>
+	<div class="border">
+	        <div class="title"><span>关于rgba/hsla的使用</span></div>
+	</div>
+	<div class="box">
+	         <div class="title"><span>box-shadow的使用</span></div>
+	</div>
+	<div class="outline">
+	          <div class="title"><span>关于outline的使用</span></div>
+	</div>
+                 <div class="position">
+                          <div class="calc"></div>
+                 </div>
+                 <div class="radius">
+                         <div class="title" style="top: -10px"><span>属性综合使用</span></div>
+                 </div>
+                 <div class="linear">
+                         <div class="title" style="top: -10px"><span>linear-gradient的使用</span></div>
+                 </div>
+</body>
+</html>
