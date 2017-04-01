@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>平行四边形的制作</title>
+	<style type="text/css">
+                    .skew { 
+                                position: absolute;
+                    	height:  150px;
+                    	width: 150px;
+                                margin: auto;
+                                top: 0;
+                                right: 0;
+                                bottom: 0;
+                                left: 0;
+                    	background:  #58a;
+                    	transform: skewX(-45deg);
+                    }
+	</style>
+</head>
+<body>
+	<div class="skew" id="skew"></div>
+                <script type="text/javascript">
+                         var skew = document.getElementById("skew");
+                         var Element = (skew.currentStyle? skew.currentStyle : window.getComputedStyle(skew,null)); 
+                              var fn1 = function(dom){
+                                         dom.style.borderRadius = "50%";
+                                         dom.style.transform = "skewX(0deg)";
+                                         dom.style.background = "#BEC8CE";
+                              }
+                              var fn2 = function(dom){
+                                   dom.style.borderRadius = "0";
+                                   dom.style.transform = "skewX(-45deg)";
+                                   dom.style.background = "#58a";
+                              }
+                         skew.onclick = function(){
+                              console.log(Element.borderRadius);
+                              if(Element.borderRadius == "0px"){
+                                fn1(skew);
+                              }else{
+                                   fn2(skew);
+                              }
+                         }
+                </script>
+</body>
+</html>
