@@ -1,155 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>DEMO</title>
-	<style type="text/css">
-    * {
-	margin: 0;
-	padding: 0;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Camera in Browse</title>
+  <style type='text/scc'>
+	html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
-video {
-	display: block;
-	height: 400px;
-	width: 300px;
-	margin: 0 auto;
+html {
+  height: 100%;
 }
 
-canvas {
-	position: fixed;
-	top: 100%;
-	left: 0;
-	z-index: -1;
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  min-height: 100%;
+  display: grid;
+}
+
+header {
+  background: #cda477;
+  color: #fff;
+  text-align: center;
+}
+main {
+  background: #ffffff;
+  min-height: 80vh;
 }
 
 .controls {
-	padding: 10px 20px;
-	text-align: center;
-}
-.controls-btn {
-	padding: 10px;
+  text-align: center;
+  padding: 0.5em 0;
+  background: #333e5a;
 }
 
-.image-list {
-	margin: 0 auto;
-	width: 400px;
+video {
+  /* width: 200px; */
+  max-width: 180px;
+  display: block;
+  margin: 0 auto;
 }
 
-.image-wrap {
-	position: relative;
-	margin: 10px 0;
+canvas {
+  margin: 0 auto;
+  display: block;
 }
 
-.image-img {
-	display: block;
+img {
+  width: 0;
+  height: 0;
 }
 
-.image-label {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	padding: 0 10px;
-	font-size: 12px;
-	color: #333;
-	background: rgba(150,150,150,0.5);
+footer {
+  background: #333e5a;
+  color: #fff;
+  text-align: center;
+}
+
+footer a {
+  color: #fff;
 }
   </style>
+
 </head>
+
 <body>
-	<video autoplay playsinline controls="true"></video>
-	<div class="controls">
-		<button class="ctrl-capture controls-btn" id="capture">Capture</button>
-	</div>
-	<canvas width="4000" height="3000"></canvas>
-	<div class="image-list"></div>
-	<script>
-      (function () {
-	var video = document.querySelector('video')
-	var canvas = document.querySelector('canvas')
-	var mediaStream
 
-	document.querySelector('#capture').addEventListener('click', capturePicture)
-	navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia
-	navigator.mediaDevices.getUserMedia({ audio: false, video: {height:4000,width:3000} })
-		.then(function(stream) {
-			mediaStream = stream
-			// Older browsers may not have srcObject
-			if ("srcObject" in video) {
-				video.srcObject = stream
-			} else {
-				// Avoid using this in new browsers, as it is going away.
-				video.src = window.URL.createObjectURL(stream)
-			}
-			video.onloadedmetadata = function(e) {
-				video.play()
-			}
-		})
-		.catch(function(err) {
-			alert(err.name + ": " + err.message)
-		})
+  <main>
+    <div class="controls">
+      <button id="button">Camera</button>
+      <select id="select">
+        <option></option>
+      </select>
+      <button id='shot'>Screen Shot</button>
+    </div>
 
-	function capturePicture() {
-		if (mediaStream) {
-			let track = mediaStream.getVideoTracks()[0]
-			let imageCapture = new ImageCapture(track)
-			imageCapture.grabFrame()
-				.then(img => {	
-					drawCanvas(canvas, img)
-				}
-				)
-				.then(() => addImageFromCanvas())
-				.catch(e => alert(`${e.name}:\n${e.message}`))
-		}
-	}
+    <video id="video" autoplay playsinline></video>
+    <canvas id='canvas' width='180' height='320'></canvas>
+    <img id='img' src="">
+  </main>
 
-	function drawCanvas(canvas, img) {
-		let style = getComputedStyle(canvas)
-		canvas.width = parseInt(style.width.split('px'), 10)
-		canvas.height = parseInt(style.height.split('px'), 10)
-		let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
-		let x = (canvas.width - img.width * ratio) / 2;
-		let y = (canvas.height - img.height * ratio) / 2;
-		let context = canvas.getContext('2d')
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(img, 0, 0, img.width, img.height, x, y, img.width * ratio, img.height * ratio);
-	}
-
-	function addImageFromCanvas() {
-		prepend(document.querySelector('.image-list'), getImageWrap(canvas.toDataURL("image/png")))
-	}
-
-	function getImageWrap(imgUrl) {
-		var wrap = document.createElement('div')
-		wrap.className = 'image-wrap'
-		var img = document.createElement('img')
-		img.className = 'image-img'
-		img.src = imgUrl
-		var label = document.createElement('div')
-		label.className = 'image-label'
-		label.textContent = formatDate(new Date())
-		wrap.appendChild(img)
-		wrap.appendChild(label)
-		return wrap
-	}
-
-	function prepend(parent, child) {
-		let firstChild = parent.firstChild
-		if (firstChild) {
-			parent.insertBefore(child, firstChild)
-		} else {
-			parent.appendChild(child)
-		}
-	}
-
-	function formatDate(date) {
-		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ` +
-			`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-	}
-})()
-
-  </script>
+  <script src="./app.js"></script>
 </body>
+<script>
+var video = document.getElementById('video');
+var button = document.getElementById('button');
+var select = document.getElementById('select');
+var canvas = document.getElementById('canvas');
+var img = document.getElementById('img');
+var shot = document.getElementById('shot')
+var currentStream;
+
+button.addEventListener('click', event => {
+	if (typeof currentStream !== 'undefined') {
+		stopMediaTracks(currentStream);
+	}
+	var videoConstraints = {};
+	videoConstraints.width = 300
+	videoConstraints.height = 400
+	if (select.value === '') {
+		videoConstraints.facingMode = 'environment';
+	} else {
+		videoConstraints.deviceId = {exact: select.value};
+	}
+	var constraints = {
+		video: videoConstraints,
+		audio: false
+	};
+	navigator.mediaDevices
+		.getUserMedia(constraints)
+		.then(stream => {
+			currentStream = stream;
+			video.srcObject = stream;
+			return navigator.mediaDevices.enumerateDevices();
+		})
+		.then(gotDevices)
+		.catch(error => {
+			console.error(error);
+		});
+});
+
+shot.addEventListener('click', screenShot)
+
+function stopMediaTracks(stream) {
+	stream.getTracks().forEach(track => {
+		track.stop();
+	});
+}
+
+function gotDevices(mediaDevices) {
+	select.innerHTML = '';
+	select.appendChild(document.createElement('option'));
+	var count = 1;
+	mediaDevices.forEach(mediaDevice => {
+		if (mediaDevice.kind === 'videoinput') {
+			const option = document.createElement('option');
+			option.value = mediaDevice.deviceId;
+			const label = mediaDevice.label || `Camera ${count++}`;
+			const textNode = document.createTextNode(label);
+			option.appendChild(textNode);
+			select.appendChild(option);
+		}
+	});
+}
+
+function screenShot() {
+	canvas.getContext('2d').drawImage(video, 0, 0, 180, 320);
+
+	img.src = canvas.toDataURL("image/png");
+}
+
+navigator.mediaDevices.enumerateDevices().then(gotDevices)
+</script>
 </html>
